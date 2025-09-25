@@ -22,6 +22,13 @@ export interface Todo {
   updatedAt?: string | null;
 }
 
+export type Priority = Todo['priority'];
+
+export interface TodoCreate extends Partial<Todo> {
+  name: string;
+  owner: string;
+}
+
 export interface PaginatedTodos {
   data: Todo[];
   meta: {

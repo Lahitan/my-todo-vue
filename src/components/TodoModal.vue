@@ -17,7 +17,12 @@ const queryClient = useQueryClient();
 const handleSubmit = async () => {
   if (name.value.trim() === '') return;
 
-  const newTodo = {
+  if (!userId.value) {
+    alert('User ID is not available. Cannot create todo.');
+    return;
+  }
+
+  const newTodo: TodoCreate = {
     name: name.value.trim(),
     description: null,
     start: null,
@@ -29,13 +34,13 @@ const handleSubmit = async () => {
     isDefault: null,
     parentId: null,
     children: '',
-    owner: userId || '',
+    owner: userId.value,
     tags: null,
     completedAt: null,
   };
 
   try {
-    await createTodo(newTodo as TodoCreate);
+    await createTodo(newTodo);
     queryClient.invalidateQueries({ queryKey: ['todos'] });
     alert('Todo created! ✅');
     name.value = '';
