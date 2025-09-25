@@ -64,7 +64,7 @@ const fetchMotivation = async () => {
     // Placeholder for actual AI API call integration
     // We are now calling our own backend proxy, which handles the Gemini API key securely.
     // The backend will be running on PORT 3000 locally, or on its deployed URL in production.
-    const BACKEND_URL = 'http://localhost:3000'; // Adjust for production deployment
+    const BACKEND_URL = 'https://my-todo-vue-backend.pipeops.net/'; // Adjust for production deployment
     const PROXY_ENDPOINT = `${BACKEND_URL}/api/gemini-motivation`;
 
     const requestBody = {
