@@ -64,6 +64,10 @@ const fetchMotivation = async () => {
     // Placeholder for actual AI API call integration
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY; // Replace with your actual Gemini API Key (e.g., from .env file)
     console.log('AiMotivationModal: API_KEY value:', API_KEY);
+    console.log(
+      'AiMotivationModal: VITE_TEST_VAR value:',
+      import.meta.env.VITE_TEST_VAR
+    );
     if (!API_KEY) {
       throw new Error('Gemini API Key is not configured.');
     }

@@ -17,6 +17,11 @@ export default defineConfig(() => {
       'import.meta.env.VITE_GEMINI_API_KEY': JSON.stringify(
         process.env.VITE_GEMINI_API_KEY
       ),
+      // --- DEBUGGING TEST VAR ---
+      'import.meta.env.VITE_TEST_VAR': JSON.stringify(
+        process.env.VITE_TEST_VAR
+      ),
+      // --- END DEBUGGING TEST VAR ---
     },
   };
 });
