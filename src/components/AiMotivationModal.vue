@@ -62,40 +62,39 @@ const fetchMotivation = async () => {
     motivationText.value =
       'This app helps you organize tasks and boost productivity. Stay focused on your goals, one todo at a time!';
     // Placeholder for actual AI API call integration
-    const API_KEY = process.env.VITE_GEMINI_API_KEY; // Access via process.env
-    console.log('AiMotivationModal: API_KEY value:', API_KEY);
-    if (!API_KEY) {
-      throw new Error('Gemini API Key is not configured.');
-    }
+    // We are now calling our own backend proxy, which handles the Gemini API key securely.
+    // The backend will be running on PORT 3000 locally, or on its deployed URL in production.
+    const BACKEND_URL = 'http://localhost:3000'; // Adjust for production deployment
+    const PROXY_ENDPOINT = `${BACKEND_URL}/api/gemini-motivation`;
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [
+    const requestBody = {
+      contents: [
+        {
+          parts: [
             {
-              parts: [
-                {
-                  text: 'Summarize a todo application and provide a short, motivating quote about productivity. Keep it concise, around 100 words.',
-                },
-              ],
+              text: 'Summarize a todo application and provide a short, motivating quote about productivity. Keep it concise, around 100 words.',
             },
           ],
-          generationConfig: {
-            maxOutputTokens: 150,
-          },
-        }),
-      }
-    );
+        },
+      ],
+      generationConfig: {
+        maxOutputTokens: 150,
+      },
+    };
+
+    const response = await fetch(PROXY_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(
-        errorData.error?.message || 'Failed to fetch AI motivation'
+        errorData.error?.message ||
+          'Failed to fetch AI motivation from backend proxy'
       );
     }
 
