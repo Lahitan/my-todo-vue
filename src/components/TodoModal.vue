@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, type Ref } from 'vue';
-import { useTodos } from '@/composables/useTodos';
+import { ref, type Ref } from 'vue';
+import { createTodo, type TodoCreate, type Priority } from '@/api/todos';
 import useUserInfo from '@/composables/useUserInfo';
+import { useQueryClient } from '@tanstack/vue-query';
 
 const emit = defineEmits();
 
@@ -11,7 +12,7 @@ const isOpen = ref(false);
 
 const { id: userId } = useUserInfo();
 
-const { createTodoMutation, invalidateTodos } = useTodos();
+const queryClient = useQueryClient();
 
 const handleSubmit = async () => {
   if (name.value.trim() === '') return;
@@ -22,7 +23,7 @@ const handleSubmit = async () => {
     start: null,
     end: null,
     duration: null,
-    priority: 'LOW',
+    priority: 'LOW' as Priority,
     status: completed.value ? 'DONE' : 'TODO',
     archived: false,
     isDefault: null,
@@ -34,9 +35,9 @@ const handleSubmit = async () => {
   };
 
   try {
-    await createTodoMutation.mutateAsync(newTodo);
+    await createTodo(newTodo as TodoCreate);
+    queryClient.invalidateQueries({ queryKey: ['todos'] });
     alert('Todo created! ✅');
-    invalidateTodos();
     name.value = '';
     completed.value = false;
     isOpen.value = false;
