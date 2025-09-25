@@ -62,12 +62,8 @@ const fetchMotivation = async () => {
     motivationText.value =
       'This app helps you organize tasks and boost productivity. Stay focused on your goals, one todo at a time!';
     // Placeholder for actual AI API call integration
-    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY; // Replace with your actual Gemini API Key (e.g., from .env file)
+    const API_KEY = process.env.VITE_GEMINI_API_KEY; // Access via process.env
     console.log('AiMotivationModal: API_KEY value:', API_KEY);
-    console.log(
-      'AiMotivationModal: VITE_TEST_VAR value:',
-      import.meta.env.VITE_TEST_VAR
-    );
     if (!API_KEY) {
       throw new Error('Gemini API Key is not configured.');
     }
